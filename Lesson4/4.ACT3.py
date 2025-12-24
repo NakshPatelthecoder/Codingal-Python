@@ -5,5 +5,5 @@ English = int(input(" English:"))
 Science = int(input(" Science:"))
 Hindi = int(input(" Hind:"))
 
-# Caculating the percentage of the marks obtained
+# Calculating the percentage of the marks obtained
 print(" The percentage of the marks obtained: ", ((Maths + English + Science + Hindi)/400)*100) 

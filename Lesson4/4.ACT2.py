@@ -1,7 +1,7 @@
 # Taking the total amount as an input from the user
 Amount=int(input("  Please enter the amount for the withdrawal: "))
 
-# Caculating the number of notesof different denominations
+# Calculating the number of notesof different denominations
 note_1 = Amount//100
 note_2 = (Amount%100)//50
 note_3 = ((Amount%100)%50)//10
