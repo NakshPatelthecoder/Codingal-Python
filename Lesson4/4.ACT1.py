@@ -9,5 +9,5 @@ height5=int(input(" Please enter the height of tree 5: "))
 # Summing the heights of the trees
 sum = height1 + height2 + height3 + height4 + height5
 
-# Averaging th heights 
+# Averaging the heights 
 print( "The average of the five tress above is: ", sum/5 )
