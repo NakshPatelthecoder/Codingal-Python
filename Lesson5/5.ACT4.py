@@ -4,4 +4,4 @@ print (" Number to be checked : ", number)
 if number%2==0:
     print (" This number is an even number. ")
 else:
-    print (" Thsi number is an odd number. ")
+    print (" This number is an odd number. ")

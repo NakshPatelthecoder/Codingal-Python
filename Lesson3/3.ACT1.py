@@ -2,7 +2,6 @@
 a=19
 print("type of a: ",type(a))
 
-
 b=67.5
 print("type of b:", type(b))
 
