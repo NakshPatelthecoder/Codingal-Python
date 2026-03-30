@@ -1,5 +1,5 @@
 import turtle   # Importing Library
-turtle.Screen().bgcolor(input(" What colour do you want the background to be ( It must be spelt correctly): "))
+turtle.Screen().bgcolor(input(" What colour do you want the background to be ( It must be spelt correctly & you can use a hex code ): "))
 turtle.Screen().setup(300,400)
 polygon = turtle.Turtle() # defined variable
 
