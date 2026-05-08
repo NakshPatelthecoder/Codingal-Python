@@ -20,5 +20,5 @@ while True:
     else:
         print (" You lose! ")
 
-    if input ("  Do you want to play again?  Answer with - Y (To play another match) or N (To QUIT becuase the computer's too good)").lower() != "Y":
+    if input ("  Do you want to play again?  Answer with - Y (To play another match) or N (To QUIT becuase the computer's too good)").lower() != "y":
         break
