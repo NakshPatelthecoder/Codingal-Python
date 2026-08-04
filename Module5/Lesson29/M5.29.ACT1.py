@@ -11,3 +11,4 @@ class myClass:
 foo = myClass
 foo.hello
 foo.__privMeth
+
