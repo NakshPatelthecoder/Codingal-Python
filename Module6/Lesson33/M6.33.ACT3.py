@@ -33,8 +33,8 @@ def main():
         if pressed[pygame.K_UP]: y -= 3
         if pressed[pygame.K_DOWN]: y += 3
 
-        x = min(max(0, x), screen_width - screen_width)
-        y = min(max(0, y), screen_height - screen_height)
+        x = min(max(0, x), screen_width - sprite_width)
+        y = min(max(0, y), screen_height - sprite_height)
 
         # Change colour based on boundary contact
         if x ==0: current_colour = colours["Blue"]
