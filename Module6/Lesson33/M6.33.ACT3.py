@@ -3,7 +3,8 @@ import pygame
 def main():
     pygame.init()
     screen_width, screen_height = 500, 500
-    screen = pygame.display.set_caption("Colour Changing Sprite")
+    screen = pygame.display.set_mode((screen_width, screen_height))
+    pygame.display.set_caption("Colour Changing Sprite")
 
     # Mapping of colour names to RGB values
     colours = {
@@ -29,8 +30,8 @@ def main():
         pressed = pygame.key.get_pressed()
         if pressed[pygame.K_LEFT]: x -= 3
         if pressed[pygame.K_RIGHT]: x += 3
-        if pressed[pygame.K_UP]: Y -= 3
-        if pressed[pygame.K_DOWN]: Y += 3
+        if pressed[pygame.K_UP]: y -= 3
+        if pressed[pygame.K_DOWN]: y += 3
 
         x = min(max(0, x), screen_width - screen_width)
         y = min(max(0, y), screen_height - screen_height)
@@ -46,7 +47,7 @@ def main():
 
         screen.fill((0, 0, 0))
         pygame.draw.rect(screen, current_colour,
-                        {x, y, sprite_width, sprite_height})
+                        (x, y, sprite_width, sprite_height))
         pygame.display.flip()
         clock.tick(90)
 
