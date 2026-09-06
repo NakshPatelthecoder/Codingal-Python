@@ -12,11 +12,11 @@ N_E = Entry()
 
 def D():
     N = N_E.get()
-    global Message
+    global M
     M = "Welcome to the Application! \n Today's date is :"
     G = "Hello"+N+"\n"
     TB.insert(END, G)
-    TB.insert(END, Message)
+    TB.insert(END, M)
     TB.insert(END, date.today())
 
 TB = Text(height=3)
@@ -28,3 +28,5 @@ N_L.pack()
 N_E.pack()
 BTN.pack()
 TB.pack()
+
+R.mainloop()
