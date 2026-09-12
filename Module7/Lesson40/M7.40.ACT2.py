@@ -1,36 +1,68 @@
-from tkinter import *
+
+import tkinter as tk
 from tkinter import messagebox
 
-root = Tk()
+root = tk.Tk()
 root.geometry("300x300")
 
+
 def info():
-    messagebox.showinfo("Information", "This is an info message.","Please be advised that a scan has been successfully completed on your device." )
-
-def warning():
-    messagebox.showwarning("Warning", "This is a warning message.","Please be advised that a scan has been successfully completed on your device. As a result a warning has been issued as there has been a potential threat detected. Please click OK to acknowledge and continue.")
-    scanconformation()
-
-def scanconformation():
-    response = messagebox.askyesno("Scan Confirmation", "Are you sure you want to scan your device?","Please be advised that a scan has been successfully completed on your device. As a result a warning has been issued as there has been a potential threat detected. Please click OK to acknowledge and continue." )
-    if response:
-        messagebox.showinfo("Scan Started", "The scan has started.")
-    else:
-        messagebox.showinfo("Scan Cancelled", "The scan has been cancelled.")
-
-def virus():
-    messagebox.showerror("Virus Detected", "A virus has been detected on your device.","Action is required to remove the virus. Please click OK to acknowledge and continue.")
-    remove_virus()
+    messagebox.showinfo(
+        "Information",
+        "This is a virus scanner app\n\n"
+        "click on scan button to start.")
 
 def remove_virus():
-    response = messagebox.askyesno("Remove Virus", "Are you sure you want to remove the virus?","Action is required to remove the virus. Please click OK to acknowledge and continue." )
+    response = messagebox.askyesno(
+        "Remove Virus",
+        "Are you sure you want to remove the virus?\n\n"
+        "Action is required to remove the virus. "
+        "Please click Yes to remove the virus or No to cancel."
+    )
+
     if response:
         messagebox.showinfo("Virus Removed", "The virus has been removed.")
     else:
         messagebox.showinfo("Virus Not Removed", "The virus has not been removed.")
+        
+def virus():
+    messagebox.showerror(
+        "Virus Detected",
+        "A virus has been detected on your device.\n\n"
+        "Action is required to remove the virus. "
+        "Please click OK to acknowledge and continue."
+    )
+    remove_virus()
 
-Button(root, text="Scan Started", command=info).pack()
-Button(root, text="Scan Warning", command=warning).pack()
-Button(root, text="Detect Virus", command=virus).pack()
+        
+def warning():
+    messagebox.showwarning(
+        "Warning",
+        "This is a warning message.\n\n"
+        "Please be advised that a scan has been successfully completed on your device. "
+        "As a result, a warning has been issued because a potential threat was detected. "
+        "Please click OK to acknowledge and continue."
+    )
+    virus()
+
+
+def scan_confirmation():
+    response = messagebox.askyesno(
+        "Scan Confirmation",
+        "Are you sure you want to scan your device?\n\n"
+        "Please click Yes to start the scan or No to cancel."
+    )
+
+    if response:
+        messagebox.showinfo("Scan Started", "The scan has started.")
+        warning()
+    else:
+        messagebox.showinfo("Scan Cancelled", "The scan has been cancelled.")
+
+
+
+
+tk.Button(root, text="About", command=info).pack(pady=5)
+tk.Button(root, text="Scan", command=scan_confirmation).pack(pady=5)
 
 root.mainloop()
