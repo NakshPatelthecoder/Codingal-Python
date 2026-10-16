@@ -2,7 +2,7 @@ import pygame
 import sys
 import random
 
-# Initialize Pygame
+# Initialize Pygame core modules
 pygame.init()
 pygame.font.init()
 
@@ -19,7 +19,7 @@ COLOR_TEXT = (230, 235, 240)     # Clean white
 COLOR_TEXT_DIM = (140, 150, 160) # Gray labels
 COLOR_BORDER = (50, 60, 75)      # Normal walls
 
-# Room specific colors matching user styles
+# Room specific colors matching your blueprint
 COLOR_LR = (102, 0, 0)           # Dark red fill
 COLOR_K = (51, 0, 51)            # Dark Purple
 COLOR_MC = (103, 171, 159)       # Corridor Teal
@@ -71,7 +71,7 @@ rooms = {
     },
     "MC": {
         "name": "Main Corridor",
-        "rect": pygame.Rect(240, 160, 220, 20), # Custom alignment connecting K, B1, B2
+        "rect": pygame.Rect(240, 160, 220, 20), 
         "color": COLOR_MC,
         "description": "Long hallway connecting deep residential bedroom wings.",
         "connections": ["LR", "K", "B1", "B2"],
@@ -115,7 +115,7 @@ rooms = {
     },
     "BY": {
         "name": "Backyard",
-        "rect": pygame.Rect(240, -10, 360, 170), # Normalized layout above floor plan
+        "rect": pygame.Rect(240, -10, 360, 170), 
         "color": COLOR_BY,
         "description": "Muddy outdoor segment showing distinct track patterns.",
         "connections": ["K", "SHED"],
@@ -138,7 +138,6 @@ rooms = {
 }
 
 def push_log(message):
-    """Utility helper adding timeline tracking to sidebar logs"""
     global game_log
     game_log.append(message)
     if len(game_log) > 12:
@@ -149,14 +148,11 @@ running = True
 won = False
 
 while running:
-    # Scale and center rendering map matrix offset
     map_offset_x = 40
     map_offset_y = 200
     
-    # Calculate global evidence count totals dynamically
     evidence_count = sum(1 for item in inventory if "Evidence" in item)
     
-    # Check Game Over State Conditionals
     if health <= 0:
         screen.fill((20, 5, 5))
         loss_text = font_title.render("🚨 DETECTIVE COLLAPSED: CRITICAL TRAP DAMAGE Sustained", True, (255, 50, 50))
@@ -170,7 +166,6 @@ while running:
                 running = False
         continue
 
-    # Process Interactivity Input Triggers
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -178,62 +173,73 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN and not won:
             mouse_pos = pygame.mouse.get_pos()
             
-            # 1. Map Interaction Grid Target Detection Check
+            # Map Room Clicks Logic
             for room_id, r_data in rooms.items():
                 adjusted_rect = r_data["rect"].copy()
                 adjusted_rect.x += map_offset_x
                 adjusted_rect.y += map_offset_y
                 
                 if adjusted_rect.collidepoint(mouse_pos):
-                    # Check connection legitimacy step array matching paths
                     if room_id == current_room:
                         push_log("You are already standing in this section.")
                     elif room_id in rooms[current_room]["connections"]:
                         
-                        # Evaluating Orange Path Lock Thresholds (Leaving Room)
+                        # Leaving standard check
                         if "requires" in rooms[current_room] and room_id in rooms[current_room]["requires"]:
                             key_need = rooms[current_room]["requires"][room_id]
                             if key_need not in inventory:
-                                push_log(f"⛔ LOCKED ARROW PATH: Missing security key: {key_need}")
+                                push_log(f"⛔ LOCKED PATH: Key required: {key_need}")
                                 break
                         
-                        # Evaluating Orange Path Lock Thresholds (Entering Target)
+                        # Entering standard check
                         if "requires" in r_data and current_room in r_data["requires"]:
                             key_need = r_data["requires"][current_room]
                             if key_need not in inventory:
-                                push_log(f"⛔ ACCESS DENIED: Entry lock requires: {key_need}")
+                                push_log(f"⛔ ACCESS DENIED: Requires: {key_need}")
                                 break
 
-                        # Trigger blind active booby trap state mechanics if moving without searching
+                        # Trigger blind active booby trap state mechanics
                         if r_data["trap_active"]:
                             dmg = random.randint(35, 45)
                             health -= dmg
                             blood_contamination = min(100, blood_contamination + 25)
                             push_log(f"💥 TRAP DETONATED inside {r_data['name']}!")
-                            push_log(f"Received -{dmg} HP damage step.")
-                            r_data["trap_active"] = False # Removed after blowing up
+                            push_log(f"Received -{dmg} HP damage.")
+                            r_data["trap_active"] = False 
                             
-                        # Move tracking execution phase updates
                         current_room = room_id
                         blood_contamination = min(100, blood_contamination + random.randint(3, 7))
                         push_log(f"Moved successfully into: {r_data['name']}")
                         
-                        # Check win parameters instantaneously upon returning to main door entry
                         if current_room == "LR" and evidence_count == TOTAL_EVIDENCE:
                             won = True
                     else:
                         push_log("❌ This section does not link cleanly over current walls.")
                     break
             
-            # 2. Command Trigger Button Detection Check
+            # Search Button Logic
             btn_search = pygame.Rect(20, HEIGHT - 70, 160, 40)
             if btn_search.collidepoint(mouse_pos):
                 r_now = rooms[current_room]
                 if not r_now["has_searched"]:
                     r_now["has_searched"] = True
                     
-                    # Defuse mechanics handling prior logic
                     if r_now["trap_active"]:
                         push_log("⚡ Scanner Alerted! Trap localized and defused safely.")
                         r_now["trap_active"] = False
+                    
+                    if r_now["item"]:
+                        inventory.add(r_now["item"])
+                        push_log(f"💼 Found clue: {r_now['item']}")
+                    if "hidden_key" in r_now:
+                        inventory.add(r_now["hidden_key"])
+                        push_log(f"🔑 Obtained utility: {r_now['hidden_key']}")
+                        
+                    if current_room == "K":
+                        inventory.add("Bedroom 2 Key")
+                        push_log("🔑 Obtained utility: Bedroom 2 Key from container.")
+                    elif current_room == "SHED":
+                        inventory.add("Evidence Piece #1: Bloody Footprint")
+                        push_log("💼 Found clue: Evidence Piece #1: Bloody Footprint")
+                else:
                     
